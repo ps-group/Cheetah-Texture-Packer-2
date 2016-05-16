@@ -4,7 +4,7 @@ MaxRects::MaxRects()
 {
 }
 
-QPoint MaxRects::insertNode(inputImage *input)
+QPoint MaxRects::insertNode(InputImage *input)
 {
     int i;
     int min = 999999999, mini = -1, m;

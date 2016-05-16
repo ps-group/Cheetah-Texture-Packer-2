@@ -8,6 +8,8 @@ QT += core gui
 
 TARGET = cheetah-texture-packer
 
+CONFIG += c++11
+
 QT_VERSION=$$[QT_VERSION]
 
 contains(QT_VERSION, "^5.*") {
@@ -23,12 +25,14 @@ SOURCES += main.cpp\
 	imagepacker.cpp \
 	imagecrop.cpp \
 	imagesort.cpp \
-	maxrects.cpp
+	maxrects.cpp \
+    commandlinehandler.cpp
 
 HEADERS  += mainwindow.h \
 	view.h \
 	imagepacker.h \
-	maxrects.h
+	maxrects.h \
+    commandlinehandler.h
 FORMS    += mainwindow.ui
 
 QMAKE_CXXFLAGS += -Wextra -Werror

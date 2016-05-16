@@ -6,7 +6,7 @@
 
 class MaxRects;
 
-struct packedImage
+struct PackedImage
 {
     QImage img;
     QRect rc;
@@ -16,7 +16,7 @@ struct packedImage
     int id;
 };
 
-struct inputImage
+struct InputImage
 {
     quint32 hash;
     int textureId;
@@ -30,7 +30,7 @@ struct inputImage
     bool cropped, rotated;
 };
 
-struct border_t
+struct Border
 {
     int t, b, l, r;
 };
@@ -44,7 +44,7 @@ class ImagePacker : public QObject
         void SortImages(int w, int h);
 
     public:
-        QList<inputImage> images;
+        QList<InputImage> images;
         QList<QSize> bins;
         ImagePacker();
         bool compareImages(QImage *img1, QImage *img2, int *i, int *j);
@@ -67,7 +67,7 @@ class ImagePacker : public QObject
         void sort();
         void addItem(const QImage &img, void *data, QString path);
         void addItem(QString path, void *data);
-        const inputImage *find(void *data);
+        const InputImage *find(void *data);
         void removeId(void *);
         void realculateDuplicates();
         void clear();
@@ -77,7 +77,7 @@ class ImagePacker : public QObject
         int mergedImages;
         bool ltr, merge, square, autosize, mergeBF;
         int cropThreshold;
-        border_t border;
+        Border border;
         int extrude;
         int rotate;
         int sortOrder;

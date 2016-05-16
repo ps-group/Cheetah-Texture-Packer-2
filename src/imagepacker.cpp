@@ -238,7 +238,7 @@ void ImagePacker::UpdateCrop()
 
 void ImagePacker::addItem(const QImage &img, void *data, QString path)
 {
-    inputImage i;
+    InputImage i;
     if(img.width() == 0 || img.height() == 0)
     {
         return;
@@ -293,7 +293,7 @@ void ImagePacker::removeId(void *data)
         }
     }
 }
-const inputImage *ImagePacker::find(void *data)
+const InputImage *ImagePacker::find(void *data)
 {
     for(int i = 0; i < images.count(); i++)
     {
@@ -426,7 +426,7 @@ unsigned ImagePacker::AddImgesToBins(int heur, int w, int h)
 void ImagePacker::CropLastImage(int heur, int w, int h, bool wh)
 {
     missingImages = 0;
-    QList<inputImage> last_images = images;
+    QList<InputImage> last_images = images;
     QList<QSize> last_bins = bins;
     quint64 last_area = area;
 
@@ -503,7 +503,7 @@ void ImagePacker::CropLastImage(int heur, int w, int h, bool wh)
 void ImagePacker::DivideLastImage(int heur, int w, int h, bool wh)
 {
     missingImages = 0;
-    QList<inputImage> last_images = images;
+    QList<InputImage> last_images = images;
     QList<QSize> last_bins = bins;
     quint64 last_area = area;
 

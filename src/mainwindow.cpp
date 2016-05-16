@@ -5,9 +5,11 @@
 #include <QTextStream>
 #include <QMimeData>
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
+    , imageExtensions({"bmp", "png", "jpg", "jpeg"})
 {
     exporting = false;
     ui->setupUi(this);
@@ -21,8 +23,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     pattern = QPixmap(20, 20);
     QPainter painter(&pattern);
-#define BRIGHT 190
-#define SHADOW 150
+    const int BRIGHT = 190;
+    const int SHADOW = 150;
     painter.fillRect(0, 0, 10, 10, QColor(SHADOW, SHADOW, SHADOW));
     painter.fillRect(10, 0, 10, 10, QColor(BRIGHT, BRIGHT, BRIGHT));
     painter.fillRect(10, 10, 10, 10, QColor(SHADOW, SHADOW, SHADOW));
@@ -35,11 +37,11 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::RecurseDirectory(const QString &dir)
+void MainWindow::recurseDirectory(const QString &dir)
 {
     QDir dirEnt(dir);
     QFileInfoList list = dirEnt.entryInfoList();
-    for(int i = 0; i < list.count() && !recursiveLoaderDone; i++)
+    for (int i = 0; i < list.count() && !recursiveLoaderDone; i++)
     {
         recursiveLoaderCounter++;
         QFileInfo info = list[i];
@@ -52,21 +54,20 @@ void MainWindow::RecurseDirectory(const QString &dir)
             // recursive
             if(info.fileName() != ".." && info.fileName() != ".")
             {
-                RecurseDirectory(filePath);
+                recurseDirectory(filePath);
             }
         }
-        else
-            if(imageExtensions.contains(fileExt))
+        else if(imageExtensions.contains(fileExt))
+        {
+            if(!QFile::exists(name + info.completeBaseName() + QString(".atlas")))
             {
-                if(!QFile::exists(name + info.completeBaseName() + QString(".atlas")))
-                {
-                    ui->tilesList->addItem(filePath.replace(topImageDir, ""));
-                    packerData *data = new packerData;
-                    data->listItem = ui->tilesList->item(ui->tilesList->count() - 1);
-                    data->path = info.absoluteFilePath();
-                    packer.addItem(data->path, data);
-                }
+                ui->tilesList->addItem(filePath.replace(topImageDir, ""));
+                packerData *data = new packerData;
+                data->listItem = ui->tilesList->item(ui->tilesList->count() - 1);
+                data->path = info.absoluteFilePath();
+                packer.addItem(data->path, data);
             }
+        }
         if(recursiveLoaderCounter == 500)
         {
             if(QMessageBox::No ==
@@ -106,7 +107,7 @@ void MainWindow::addDir(QString dir)
     recursiveLoaderCounter = 0;
     recursiveLoaderDone = false;
     //packer.clear();
-    RecurseDirectory(dir);
+    recurseDirectory(dir);
     QFileInfo info(dir);
     ui->outFile->setText(info.baseName());
 

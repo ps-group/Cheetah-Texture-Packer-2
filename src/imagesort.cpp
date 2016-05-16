@@ -1,22 +1,22 @@
 #include "imagepacker.h"
 
-bool ImageCompareByHeight(const inputImage &i1, const inputImage &i2)
+bool ImageCompareByHeight(const InputImage &i1, const InputImage &i2)
 {
     return (i1.sizeCurrent.height() << 10) + i1.sizeCurrent.width() >
            (i2.sizeCurrent.height() << 10) + i2.sizeCurrent.width();
 }
-bool ImageCompareByWidth(const inputImage &i1, const inputImage &i2)
+bool ImageCompareByWidth(const InputImage &i1, const InputImage &i2)
 {
     return (i1.sizeCurrent.width() << 10) + i1.sizeCurrent.height() >
            (i2.sizeCurrent.width() << 10) + i2.sizeCurrent.height();
 }
-bool ImageCompareByArea(const inputImage &i1, const inputImage &i2)
+bool ImageCompareByArea(const InputImage &i1, const InputImage &i2)
 {
     return i1.sizeCurrent.height() * i1.sizeCurrent.width() >
            i2.sizeCurrent.height() * i2.sizeCurrent.width();
 }
 
-bool ImageCompareByMax(const inputImage &i1, const inputImage &i2)
+bool ImageCompareByMax(const InputImage &i1, const InputImage &i2)
 {
     int first = i1.sizeCurrent.height() > i1.sizeCurrent.width() ?
                 i1.sizeCurrent.height() : i1.sizeCurrent.width();

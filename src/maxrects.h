@@ -21,10 +21,10 @@ class MaxRects
         QList<MaxRectsNode> F;
         QList<QRect> R;
         QList<MaxRectsNode *> FR;
-        QPoint insertNode(inputImage *);
+        QPoint insertNode(InputImage *);
         int heuristic, w, h, rotation;
         bool leftToRight;
-        border_t *border;
+        Border *border;
 };
 
 #endif // MAXRECTS_H
