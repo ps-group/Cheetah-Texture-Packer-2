@@ -1,8 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "atlasmetadatawriter.h"
+#include "utils.h"
 #include <QFileDialog>
 #include <QMessageBox>
-#include <QTextStream>
 #include <QMimeData>
 
 
@@ -88,6 +89,41 @@ void MainWindow::recurseDirectory(const QString &dir)
             }
             ui->previewWithImages->setChecked(false);
         }
+    }
+}
+
+void MainWindow::writeMetadataFile(const QList<QImage> &images, int imageIndex)
+{
+    QStringList frameNames;
+    for (int i = 0; i < packer.images.size(); i++)
+    {
+        frameNames << ((static_cast<packerData *>(packer.images.at(i).id))->listItem)->text();
+    }
+
+    QString outDir = ui->outDir->text();
+    QString outFile = ui->outFile->text();
+    QString outFormat = ui->outFormat->currentText();
+
+    QString outputFile = outDir;
+    outputFile += QDir::separator();
+    outputFile += outFile;
+    if(images.count() > 1)
+    {
+        outputFile += QString("_") + QString::number(imageIndex + 1);
+    }
+    outputFile += ".atlas";
+    QString imgFile = outFile;
+    if(images.count() > 1)
+    {
+        imgFile += QString("_") + QString::number(imageIndex + 1);
+    }
+    imgFile += ".";
+    imgFile += outFormat.toLower();
+
+    AtlasMetadataWriter writer;
+    if(!Utils::exportMetadata(outputFile, imgFile, images[imageIndex].size(), imageIndex, frameNames, packer, writer))
+    {
+        QMessageBox::critical(0, tr("Error"), tr("Cannot create file ") + outputFile);
     }
 }
 
@@ -179,71 +215,7 @@ void MainWindow::packerUpdate()
     {
         for(int j = 0; j < textures.count(); j++)
         {
-            QString outputFile = outDir;
-            outputFile += QDir::separator();
-            outputFile += outFile;
-            if(textures.count() > 1)
-            {
-                outputFile += QString("_") + QString::number(j + 1);
-            }
-            outputFile += ".atlas";
-            QString imgFile = outFile;
-            if(textures.count() > 1)
-            {
-                imgFile += QString("_") + QString::number(j + 1);
-            }
-            imgFile += ".";
-            imgFile += outFormat.toLower();
-
-            QFile positionsFile(outputFile);
-            if(!positionsFile.open(QIODevice::WriteOnly | QIODevice::Text))
-            {
-                QMessageBox::critical(0, tr("Error"), tr("Cannot create file ") + outputFile);
-            }
-            else
-            {
-                QTextStream out(&positionsFile);
-                out << "textures: " << imgFile << "\n";
-                for(i = 0; i < packer.images.size(); i++)
-                {
-                    if(packer.images.at(i).textureId != j)
-                    {
-                        continue;
-                    }
-                    QPoint pos(packer.images.at(i).pos.x() + packer.border.l + packer.extrude,
-                               packer.images.at(i).pos.y() + packer.border.t + packer.extrude);
-                    QSize size, sizeOrig;
-                    QRect crop;
-                    sizeOrig = packer.images.at(i).size;
-                    if(!packer.cropThreshold)
-                    {
-                        size = packer.images.at(i).size;
-                        crop = QRect(0, 0, size.width(), size.height());
-                    }
-                    else
-                    {
-                        size = packer.images.at(i).crop.size();
-                        crop = packer.images.at(i).crop;
-                    }
-                    if(packer.images.at(i).rotated)
-                    {
-                        size.transpose();
-                        crop = QRect(crop.y(), crop.x(), crop.height(), crop.width());
-                    }
-                    out << ((static_cast<packerData *>(packer.images.at(i).id))->listItem)->text()
-                        <<
-                        "\t" <<
-                        pos.x() << "\t" <<
-                        pos.y() << "\t" <<
-                        crop.width() << "\t" <<
-                        crop.height() << "\t" <<
-                        crop.x() << "\t" <<
-                        crop.y() << "\t" <<
-                        sizeOrig.width() << "\t" <<
-                        sizeOrig.height() << "\t" <<
-                        (packer.images.at(i).rotated ? "r" : "") << "\n";
-                }
-            }
+            writeMetadataFile(textures, j);
         }
     }
     for(i = 0; i < packer.images.size(); i++)
@@ -415,7 +387,7 @@ void MainWindow::packerUpdate()
             }
             imgdirFile += ".";
             imgdirFile += outFormat.toLower();
-            if(outFormat == "JPG")
+            if (outFormat == "JPG")
             {
                 textures.at(i).save(imgdirFile, format, 100);
             }

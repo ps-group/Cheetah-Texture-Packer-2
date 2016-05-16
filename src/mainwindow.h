@@ -31,6 +31,7 @@ public:
 
 private:
     void recurseDirectory(const QString &dir);
+    void writeMetadataFile(const QList<QImage> &images, int imageIndex);
 
     Ui::MainWindow *ui;
     QStringList imageExtensions;

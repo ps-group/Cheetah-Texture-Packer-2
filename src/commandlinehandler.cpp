@@ -1,5 +1,7 @@
+#include "atlasmetadatawriter.h"
 #include "commandlinehandler.h"
 #include "imagepacker.h"
+#include "utils.h"
 #include <QDir>
 #include <QDebug>
 #include <QPainter>
@@ -286,53 +288,16 @@ public:
             imgFile += ".";
             imgFile += outFormat.toLower();
 
-            QFile positionsFile(outputFile);
-            if(!positionsFile.open(QIODevice::WriteOnly | QIODevice::Text))
+            QStringList frameNames;
+            for(int i = 0; i < m_packer.images.size(); i++)
+            {
+                frameNames << (static_cast<packerData *>(m_packer.images.at(i).id))->file;
+            }
+
+            AtlasMetadataWriter writer;
+            if (!Utils::exportMetadata(outputFile, imgFile, textures[j].size(), j, frameNames, m_packer, writer))
             {
                 fprintf(stderr, "Cannot create file %s", qPrintable(outputFile));
-            }
-            else
-            {
-                QTextStream out(&positionsFile);
-                out << "textures: " << imgFile << "\n";
-                for(int i = 0; i < m_packer.images.size(); i++)
-                {
-                    if(m_packer.images.at(i).textureId != j)
-                    {
-                        continue;
-                    }
-                    QPoint pos(m_packer.images.at(i).pos.x() + m_packer.border.l + m_packer.extrude,
-                               m_packer.images.at(i).pos.y() + m_packer.border.t + m_packer.extrude);
-                    QSize size, sizeOrig;
-                    QRect crop;
-                    sizeOrig = m_packer.images.at(i).size;
-                    if(!m_packer.cropThreshold)
-                    {
-                        size = m_packer.images.at(i).size;
-                        crop = QRect(0, 0, size.width(), size.height());
-                    }
-                    else
-                    {
-                        size = m_packer.images.at(i).crop.size();
-                        crop = m_packer.images.at(i).crop;
-                    }
-                    if(m_packer.images.at(i).rotated)
-                    {
-                        size.transpose();
-                        crop = QRect(crop.y(), crop.x(), crop.height(), crop.width());
-                    }
-                    out << (static_cast<packerData *>(m_packer.images.at(i).id))->file <<
-                        "\t" <<
-                        pos.x() << "\t" <<
-                        pos.y() << "\t" <<
-                        crop.width() << "\t" <<
-                        crop.height() << "\t" <<
-                        crop.x() << "\t" <<
-                        crop.y() << "\t" <<
-                        sizeOrig.width() << "\t" <<
-                        sizeOrig.height() << "\t" <<
-                        (m_packer.images.at(i).rotated ? "r" : "") << "\n";
-                }
             }
         }
 

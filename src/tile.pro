@@ -26,13 +26,18 @@ SOURCES += main.cpp\
 	imagecrop.cpp \
 	imagesort.cpp \
 	maxrects.cpp \
-    commandlinehandler.cpp
+    commandlinehandler.cpp \
+    atlasmetadatawriter.cpp \
+    utils.cpp
 
 HEADERS  += mainwindow.h \
 	view.h \
 	imagepacker.h \
 	maxrects.h \
-    commandlinehandler.h
+    commandlinehandler.h \
+    imetadatawriter.h \
+    atlasmetadatawriter.h \
+    utils.h
 FORMS    += mainwindow.ui
 
 QMAKE_CXXFLAGS += -Wextra -Werror
