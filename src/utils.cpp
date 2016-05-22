@@ -17,7 +17,7 @@ namespace
 {
 QStringList FilterAcceptableFormats(const QList<QByteArray> &supportedFormats)
 {
-    QStringList formats = { "png", "jpg", "bmp", "dds", "tiff", "webp" };
+    QStringList formats = { "png", "jpg", "bmp", "dds", "webp", "tiff", "tga" };
 
     auto newEnd = std::remove_if(formats.begin(), formats.end(), [&](const QString &format) {
         return !supportedFormats.contains(format.toLatin1());

@@ -9,7 +9,6 @@
 #include "mainwindow.h"
 #include <QTranslator>
 #include <QLocale>
-#include <QStyleFactory>
 #include "commandlinehandler.h"
 
 int main(int argc, char *argv[])
@@ -20,8 +19,6 @@ int main(int argc, char *argv[])
         // run command-line version
         return doCommandLineJobs(a.arguments());
     }
-
-    QApplication::setStyle(QStyleFactory::create("Fusion"));
 
     QTranslator myTranslator;
     myTranslator.load("tile_" + QLocale::system().name(), "qm");
