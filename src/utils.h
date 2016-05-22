@@ -20,6 +20,8 @@ class Utils
 public:
     Utils() = delete;
 
+    static QStringList GetReadableImageFormats();
+    static QStringList GetWritableImageFormats();
     static std::unique_ptr<IMetadataWriter> makeMetadataWriter(OutFormat outFormat);
     static QString getFormatExtension(OutFormat outFormat);
     static bool exportMetadata(const QString &outputFile, const QString &imgFile, const QSize &imgSize, int textureId,

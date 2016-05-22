@@ -1112,21 +1112,6 @@
          </item>
          <item>
           <widget class="QComboBox" name="imageFormat">
-           <item>
-            <property name="text">
-             <string>PNG</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>JPG</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>BMP</string>
-            </property>
-           </item>
           </widget>
          </item>
         </layout>
@@ -1154,7 +1139,7 @@
            </item>
            <item>
             <property name="text">
-             <string>CSS</string>
+             <string>CSS Sprite</string>
             </property>
            </item>
           </widget>

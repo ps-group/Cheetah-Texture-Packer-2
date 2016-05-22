@@ -8,6 +8,36 @@
 #include <QFile>
 #include <QTextStream>
 #include <QMessageBox>
+#include <QImageWriter>
+#include <QImageReader>
+#include <algorithm>
+
+
+namespace
+{
+QStringList FilterAcceptableFormats(const QList<QByteArray> &supportedFormats)
+{
+    QStringList formats = { "png", "jpg", "bmp", "dds", "tiff", "webp" };
+
+    auto newEnd = std::remove_if(formats.begin(), formats.end(), [&](const QString &format) {
+        return !supportedFormats.contains(format.toLatin1());
+    });
+    formats.erase(newEnd, formats.end());
+
+    return formats;
+}
+}
+
+
+QStringList Utils::GetReadableImageFormats()
+{
+    return FilterAcceptableFormats(QImageReader::supportedImageFormats());
+}
+
+QStringList Utils::GetWritableImageFormats()
+{
+    return FilterAcceptableFormats(QImageWriter::supportedImageFormats());
+}
 
 std::unique_ptr<IMetadataWriter> Utils::makeMetadataWriter(OutFormat outFormat)
 {
@@ -21,8 +51,6 @@ std::unique_ptr<IMetadataWriter> Utils::makeMetadataWriter(OutFormat outFormat)
         return std::make_unique<CSSMetadataWriter>();
     }
     Q_ASSERT(false); // unhandled enum option.
-    QMessageBox::critical(0, QObject::tr("Internal Error"),
-                          QObject::tr("Exporting to selected format not implemented. Falling back to Cheetah format"));
     return std::make_unique<AtlasMetadataWriter>();
 }
 

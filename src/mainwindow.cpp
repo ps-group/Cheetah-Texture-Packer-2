@@ -14,23 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     exporting = false;
     ui->setupUi(this);
-    connect(this, SIGNAL(renderedImage(QList<QImage>)), ui->widget,
-            SLOT(updatePixmap(QList<QImage>)));
-    ui->outDir->setText(QDir::homePath());
-    exporting = false;
-    ui->widget->scaleBox = ui->scale;
-    tabifyDockWidget(ui->dockPreferences, ui->dockExport);
-    ui->dockPreferences->raise();
-
-    pattern = QPixmap(20, 20);
-    QPainter painter(&pattern);
-    const int BRIGHT = 190;
-    const int SHADOW = 150;
-    painter.fillRect(0, 0, 10, 10, QColor(SHADOW, SHADOW, SHADOW));
-    painter.fillRect(10, 0, 10, 10, QColor(BRIGHT, BRIGHT, BRIGHT));
-    painter.fillRect(10, 10, 10, 10, QColor(SHADOW, SHADOW, SHADOW));
-    painter.fillRect(0, 10, 10, 10, QColor(BRIGHT, BRIGHT, BRIGHT));
-    setAcceptDrops(true);
+    customizeUI();
 }
 
 MainWindow::~MainWindow()
@@ -90,6 +74,28 @@ void MainWindow::recurseDirectory(const QString &dir)
             ui->previewWithImages->setChecked(false);
         }
     }
+}
+
+void MainWindow::customizeUI()
+{
+    connect(this, SIGNAL(renderedImage(QList<QImage>)), ui->widget,
+            SLOT(updatePixmap(QList<QImage>)));
+    ui->outDir->setText(QDir::homePath());
+    exporting = false;
+    ui->widget->scaleBox = ui->scale;
+    tabifyDockWidget(ui->dockPreferences, ui->dockExport);
+    ui->dockPreferences->raise();
+    ui->imageFormat->addItems(Utils::GetWritableImageFormats());
+    setAcceptDrops(true);
+
+    pattern = QPixmap(20, 20);
+    QPainter painter(&pattern);
+    const int BRIGHT = 190;
+    const int SHADOW = 150;
+    painter.fillRect(0, 0, 10, 10, QColor(SHADOW, SHADOW, SHADOW));
+    painter.fillRect(10, 0, 10, 10, QColor(BRIGHT, BRIGHT, BRIGHT));
+    painter.fillRect(10, 10, 10, 10, QColor(SHADOW, SHADOW, SHADOW));
+    painter.fillRect(0, 10, 10, 10, QColor(BRIGHT, BRIGHT, BRIGHT));
 }
 
 void MainWindow::writeMetadataFile(const QList<QImage> &images, int imageIndex)
