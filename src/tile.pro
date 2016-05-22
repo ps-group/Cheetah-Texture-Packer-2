@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     commandlinehandler.cpp \
     atlasmetadatawriter.cpp \
     utils.cpp \
-    cocosmetadatawriter.cpp
+    cocosmetadatawriter.cpp \
+    cssmetadatawriter.cpp
 
 HEADERS  += mainwindow.h \
 	view.h \
@@ -39,7 +40,8 @@ HEADERS  += mainwindow.h \
     imetadatawriter.h \
     atlasmetadatawriter.h \
     utils.h \
-    cocosmetadatawriter.h
+    cocosmetadatawriter.h \
+    cssmetadatawriter.h
 FORMS    += mainwindow.ui
 
 QMAKE_CXXFLAGS += -Wextra -Werror

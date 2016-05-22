@@ -3,6 +3,7 @@
 #include "imetadatawriter.h"
 #include "atlasmetadatawriter.h"
 #include "cocosmetadatawriter.h"
+#include "cssmetadatawriter.h"
 #include <QRect>
 #include <QFile>
 #include <QTextStream>
@@ -17,8 +18,7 @@ std::unique_ptr<IMetadataWriter> Utils::makeMetadataWriter(OutFormat outFormat)
     case OutFormat::COCOS2DX:
         return std::make_unique<CocosMetadataWriter>();
     case OutFormat::CSS_SPRITE:
-        // FIXME: not implemented
-        break;
+        return std::make_unique<CSSMetadataWriter>();
     }
     Q_ASSERT(false); // unhandled enum option.
     QMessageBox::critical(0, QObject::tr("Internal Error"),
