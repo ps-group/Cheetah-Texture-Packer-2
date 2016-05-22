@@ -1,9 +1,45 @@
 #include "utils.h"
 #include "imagepacker.h"
 #include "imetadatawriter.h"
+#include "atlasmetadatawriter.h"
+#include "cocosmetadatawriter.h"
 #include <QRect>
 #include <QFile>
 #include <QTextStream>
+#include <QMessageBox>
+
+std::unique_ptr<IMetadataWriter> Utils::makeMetadataWriter(OutFormat outFormat)
+{
+    switch (outFormat)
+    {
+    case OutFormat::CHEETAH:
+        return std::make_unique<AtlasMetadataWriter>();
+    case OutFormat::COCOS2DX:
+        return std::make_unique<CocosMetadataWriter>();
+    case OutFormat::CSS_SPRITE:
+        // FIXME: not implemented
+        break;
+    }
+    Q_ASSERT(false); // unhandled enum option.
+    QMessageBox::critical(0, QObject::tr("Internal Error"),
+                          QObject::tr("Exporting to selected format not implemented. Falling back to Cheetah format"));
+    return std::make_unique<AtlasMetadataWriter>();
+}
+
+QString Utils::getFormatExtension(OutFormat outFormat)
+{
+    switch (outFormat)
+    {
+    case OutFormat::CHEETAH:
+        return ".atlas";
+    case OutFormat::COCOS2DX:
+        return ".plist";
+    case OutFormat::CSS_SPRITE:
+        return ".css";
+    }
+    Q_ASSERT(false); // unhandled enum option.
+    return ".txt";
+}
 
 bool Utils::exportMetadata(const QString &outputFile, const QString &imgFile, const QSize &imgSize, int textureId,
                            const QStringList &frameNames, const ImagePacker &packer, IMetadataWriter &writer)

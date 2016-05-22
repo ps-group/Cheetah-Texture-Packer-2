@@ -1111,7 +1111,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="outFormat">
+          <widget class="QComboBox" name="imageFormat">
            <item>
             <property name="text">
              <string>PNG</string>
@@ -1141,13 +1141,15 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="comboBox">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
+          <widget class="QComboBox" name="outFormat">
            <item>
             <property name="text">
-             <string>Cheetah</string>
+             <string>Cheetah (text)</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Cocos2d-x (XML)</string>
             </property>
            </item>
            <item>

@@ -8,7 +8,7 @@ QT += core gui
 
 TARGET = cheetah-texture-packer
 
-CONFIG += c++11
+CONFIG += c++14
 
 QT_VERSION=$$[QT_VERSION]
 
@@ -28,7 +28,8 @@ SOURCES += main.cpp\
 	maxrects.cpp \
     commandlinehandler.cpp \
     atlasmetadatawriter.cpp \
-    utils.cpp
+    utils.cpp \
+    cocosmetadatawriter.cpp
 
 HEADERS  += mainwindow.h \
 	view.h \
@@ -37,7 +38,8 @@ HEADERS  += mainwindow.h \
     commandlinehandler.h \
     imetadatawriter.h \
     atlasmetadatawriter.h \
-    utils.h
+    utils.h \
+    cocosmetadatawriter.h
 FORMS    += mainwindow.ui
 
 QMAKE_CXXFLAGS += -Wextra -Werror

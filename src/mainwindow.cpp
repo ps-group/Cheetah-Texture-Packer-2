@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "atlasmetadatawriter.h"
 #include "utils.h"
+#include <memory>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QMimeData>
@@ -100,9 +100,10 @@ void MainWindow::writeMetadataFile(const QList<QImage> &images, int imageIndex)
         frameNames << ((static_cast<packerData *>(packer.images.at(i).id))->listItem)->text();
     }
 
-    QString outDir = ui->outDir->text();
-    QString outFile = ui->outFile->text();
-    QString outFormat = ui->outFormat->currentText();
+    const QString outDir = ui->outDir->text();
+    const QString outFile = ui->outFile->text();
+    const QString imageFormat = ui->imageFormat->currentText();
+    const OutFormat outFormat = static_cast<OutFormat>(ui->outFormat->currentIndex());
 
     QString outputFile = outDir;
     outputFile += QDir::separator();
@@ -111,17 +112,17 @@ void MainWindow::writeMetadataFile(const QList<QImage> &images, int imageIndex)
     {
         outputFile += QString("_") + QString::number(imageIndex + 1);
     }
-    outputFile += ".atlas";
+    outputFile += Utils::getFormatExtension(outFormat);
     QString imgFile = outFile;
     if(images.count() > 1)
     {
         imgFile += QString("_") + QString::number(imageIndex + 1);
     }
     imgFile += ".";
-    imgFile += outFormat.toLower();
+    imgFile += imageFormat.toLower();
 
-    AtlasMetadataWriter writer;
-    if(!Utils::exportMetadata(outputFile, imgFile, images[imageIndex].size(), imageIndex, frameNames, packer, writer))
+    auto pWriter = Utils::makeMetadataWriter(outFormat);
+    if(!Utils::exportMetadata(outputFile, imgFile, images[imageIndex].size(), imageIndex, frameNames, packer, *pWriter))
     {
         QMessageBox::critical(0, tr("Error"), tr("Cannot create file ") + outputFile);
     }
@@ -179,7 +180,6 @@ void MainWindow::deleteSelectedTiles()
 
 void MainWindow::packerUpdate()
 {
-    int i;
     quint64 area = 0;
     packer.sortOrder = ui->sortOrder->currentIndex();
     packer.border.t = ui->borderTop->value();
@@ -197,14 +197,13 @@ void MainWindow::packerUpdate()
     int heuristic = ui->comboHeuristic->currentIndex();
     QString outDir = ui->outDir->text();
     QString outFile = ui->outFile->text();
-    QString outFormat = ui->outFormat->currentText();
+    QString imageFormat = ui->imageFormat->currentText();
     bool previewWithImages = ui->previewWithImages->isChecked();
-
 
     packer.pack(heuristic, textureWidth, textureHeight);
 
     QList<QImage> textures;
-    for(i = 0; i < packer.bins.size(); i++)
+    for(int i = 0; i < packer.bins.size(); i++)
     {
         QImage texture(packer.bins.at(i).width(), packer.bins.at(i).height(),
                        QImage::Format_ARGB32);
@@ -218,7 +217,7 @@ void MainWindow::packerUpdate()
             writeMetadataFile(textures, j);
         }
     }
-    for(i = 0; i < packer.images.size(); i++)
+    for(int i = 0; i < packer.images.size(); i++)
     {
         if(packer.images.at(i).pos == QPoint(999999, 999999))
         {
@@ -358,10 +357,10 @@ void MainWindow::packerUpdate()
     }
     for(int i = 0; i < textures.count(); i++)
     {
-        area += textures.at(i).width() * textures.at(i).height();
+        area += quint64(textures.at(i).width()) * quint64(textures.at(i).height());
     }
-    float percent = (((float)packer.area / (float)area) * 100.0f);
-    float percent2 = (float)(((float)packer.neededArea / (float)area) * 100.0f);
+    float percent = 100.0f * float(packer.area) / float(area);
+    float percent2 = 100.0f * float(packer.neededArea) / float(area) * 100.0f;
     ui->preview->setText(tr("Preview: ") +
                          QString::number(percent) + QString("% filled, ") +
                          (packer.missingImages == 0 ? QString::number(packer.missingImages) +
@@ -374,7 +373,7 @@ void MainWindow::packerUpdate()
                              area * 4 / 1024));
     if(exporting)
     {
-        const char *format = qPrintable(outFormat);
+        const char *format = qPrintable(imageFormat);
         for(int i = 0; i < textures.count(); i++)
         {
             QString imgdirFile;
@@ -386,8 +385,8 @@ void MainWindow::packerUpdate()
                 imgdirFile += QString("_") + QString::number(i + 1);
             }
             imgdirFile += ".";
-            imgdirFile += outFormat.toLower();
-            if (outFormat == "JPG")
+            imgdirFile += imageFormat.toLower();
+            if (imageFormat == "JPG")
             {
                 textures.at(i).save(imgdirFile, format, 100);
             }
