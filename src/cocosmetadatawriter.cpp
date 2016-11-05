@@ -25,6 +25,11 @@ void writeString(QXmlStreamWriter &xml, const QString &value)
     xml.writeTextElement("string", value);
 }
 
+void writeBool(QXmlStreamWriter &xml, bool value)
+{
+    xml.writeEmptyElement(value ? "true" : "false");
+}
+
 void writeSize(QXmlStreamWriter &xml, const QSize &value)
 {
     char buffer[80];
@@ -100,6 +105,8 @@ void CocosMetadataWriter::writeFrames(QXmlStreamWriter &xml) const
         writeReal(xml, frame.crop.x());
         writeKey(xml, "offsetY");
         writeReal(xml, frame.crop.y());
+        writeKey(xml, "rotated");
+        writeBool(xml, frame.rotated);
         xml.writeEndElement(); // dict
     }
     xml.writeEndElement(); // dict
@@ -117,6 +124,7 @@ void CocosMetadataWriter::writeMetadata(QXmlStreamWriter &xml) const
     writeString(xml, m_meta.texturePath);
     writeKey(xml, "size");
     writeSize(xml, m_meta.textureSize);
+
     xml.writeEndElement(); // dict
 }
 
