@@ -6,14 +6,13 @@ CSSMetadataWriter::CSSMetadataWriter()
 {
 }
 
-
-void CSSMetadataWriter::WriteTexture(const QString &path, const QSize &size)
+void CSSMetadataWriter::WriteTexture(const QString& path, const QSize& size)
 {
     m_textureFilename = QFileInfo(path).fileName();
     (void)size;
 }
 
-void CSSMetadataWriter::WriteFrame(const QString &name, const QPoint &pos, const QRect &crop, const QSize &origSize, bool rotated)
+void CSSMetadataWriter::WriteFrame(const QString& name, const QPoint& pos, const QRect& crop, const QSize& origSize, bool rotated)
 {
     (void)crop;
     (void)origSize;
@@ -41,7 +40,7 @@ QByteArray CSSMetadataWriter::ToBytes() const
     return m_bytes;
 }
 
-QString CSSMetadataWriter::positionToString(const QPoint &pos)
+QString CSSMetadataWriter::positionToString(const QPoint& pos)
 {
     return coordinateToString(pos.x()) + " " + coordinateToString(pos.y());
 }

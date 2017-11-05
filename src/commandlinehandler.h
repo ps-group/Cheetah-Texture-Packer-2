@@ -3,6 +3,6 @@
 
 #include <QStringList>
 
-int doCommandLineJobs(const QStringList &args);
+int doCommandLineJobs(const QStringList& args);
 
 #endif // COMMANDLINEHANDLER_H

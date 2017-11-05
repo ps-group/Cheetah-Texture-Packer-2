@@ -1,7 +1,7 @@
 #ifndef MAXRECTS_H
 #define MAXRECTS_H
-#include <QImage>
 #include "imagepacker.h"
+#include <QImage>
 
 struct trbl
 {
@@ -16,15 +16,15 @@ struct MaxRectsNode
 };
 class MaxRects
 {
-    public:
-        MaxRects();
-        QList<MaxRectsNode> F;
-        QList<QRect> R;
-        QList<MaxRectsNode *> FR;
-        QPoint insertNode(InputImage *);
-        int heuristic, w, h, rotation;
-        bool leftToRight;
-        Border *border;
+public:
+	MaxRects();
+	QList<MaxRectsNode> F;
+	QList<QRect> R;
+	QList<MaxRectsNode*> FR;
+	QPoint insertNode(InputImage*);
+	int heuristic, w, h, rotation;
+	bool leftToRight;
+	Border* border;
 };
 
 #endif // MAXRECTS_H

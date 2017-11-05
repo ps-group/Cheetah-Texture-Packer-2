@@ -42,6 +42,7 @@ HEADERS  += mainwindow.h \
     utils.h \
     cocosmetadatawriter.h \
     cssmetadatawriter.h
+
 FORMS    += mainwindow.ui
 
 QMAKE_CXXFLAGS += -Wextra -Werror

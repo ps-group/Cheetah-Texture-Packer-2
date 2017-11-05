@@ -1,10 +1,10 @@
 #ifndef METADATAEXPORTER_H
 #define METADATAEXPORTER_H
 
-#include <QString>
-#include <QSize>
-#include <memory>
 #include "imetadatawriter.h"
+#include <QSize>
+#include <QString>
+#include <memory>
 
 class ImagePacker;
 
@@ -24,8 +24,8 @@ public:
     static QStringList GetWritableImageFormats();
     static std::unique_ptr<IMetadataWriter> makeMetadataWriter(OutFormat outFormat);
     static QString getFormatExtension(OutFormat outFormat);
-    static bool exportMetadata(const QString &outputFile, const QString &imgFile, const QSize &imgSize, int textureId,
-                               const QStringList &frameNames, const ImagePacker &packer, IMetadataWriter &writer);
+	static bool exportMetadata(const QString& outputFile, const QString& imgFile, const QSize& imgSize, int textureId,
+		const QStringList& frameNames, const ImagePacker& packer, IMetadataWriter& writer);
 };
 
 #endif // METADATAEXPORTER_H

@@ -4,29 +4,29 @@
 #include <QtGlobal>
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
-#   include <QtWidgets/QMainWindow>
-#   include <QtWidgets/QListWidget>
+#include <QtWidgets/QListWidget>
+#include <QtWidgets/QMainWindow>
 #else
-#   include <QMainWindow>
-#   include <QListWidget>
+#include <QListWidget>
+#include <QMainWindow>
 #endif
 
+#include "imagepacker.h"
+#include <QDrag>
 #include <QDropEvent>
 #include <QUrl>
-#include <QDrag>
-#include "imagepacker.h"
 
 namespace Ui
 {
-    class MainWindow;
+class MainWindow;
 }
 
 class MainWindow : public QMainWindow
 {
-Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+	explicit MainWindow(QWidget* parent = 0);
     ~MainWindow();
 
 public slots:
@@ -45,18 +45,18 @@ public slots:
     void clearTiles();
 
 signals:
-    void renderedImage(const QList<QImage> &image);
+	void renderedImage(const QList<QImage>& image);
 
 protected:
-    void dropEvent(QDropEvent *event);
-    void dragEnterEvent(QDragEnterEvent *event);
+	void dropEvent(QDropEvent* event);
+	void dragEnterEvent(QDragEnterEvent* event);
 
 private:
-    void recurseDirectory(const QString &dir);
+	void recurseDirectory(const QString& dir);
     void customizeUI();
-    void writeMetadataFile(const QList<QImage> &images, int imageIndex);
+	void writeMetadataFile(const QList<QImage>& images, int imageIndex);
 
-    Ui::MainWindow *ui;
+	Ui::MainWindow* ui;
     QStringList imageExtensions;
     QString topImageDir;
     ImagePacker packer;
@@ -68,7 +68,7 @@ private:
     void addDir(QString dir);
     struct packerData
     {
-        QListWidgetItem *listItem;
+		QListWidgetItem* listItem;
         QString path;
     };
 };

@@ -1,28 +1,30 @@
 #include "imagepacker.h"
 
-bool ImageCompareByHeight(const InputImage &i1, const InputImage &i2)
+bool ImageCompareByHeight(const InputImage& i1, const InputImage& i2)
 {
-    return (i1.sizeCurrent.height() << 10) + i1.sizeCurrent.width() >
-           (i2.sizeCurrent.height() << 10) + i2.sizeCurrent.width();
+	return (i1.sizeCurrent.height() << 10) + i1.sizeCurrent.width()
+		> (i2.sizeCurrent.height() << 10) + i2.sizeCurrent.width();
 }
-bool ImageCompareByWidth(const InputImage &i1, const InputImage &i2)
+bool ImageCompareByWidth(const InputImage& i1, const InputImage& i2)
 {
-    return (i1.sizeCurrent.width() << 10) + i1.sizeCurrent.height() >
-           (i2.sizeCurrent.width() << 10) + i2.sizeCurrent.height();
+	return (i1.sizeCurrent.width() << 10) + i1.sizeCurrent.height()
+		> (i2.sizeCurrent.width() << 10) + i2.sizeCurrent.height();
 }
-bool ImageCompareByArea(const InputImage &i1, const InputImage &i2)
+bool ImageCompareByArea(const InputImage& i1, const InputImage& i2)
 {
-    return i1.sizeCurrent.height() * i1.sizeCurrent.width() >
-           i2.sizeCurrent.height() * i2.sizeCurrent.width();
+	return i1.sizeCurrent.height() * i1.sizeCurrent.width()
+		> i2.sizeCurrent.height() * i2.sizeCurrent.width();
 }
 
-bool ImageCompareByMax(const InputImage &i1, const InputImage &i2)
+bool ImageCompareByMax(const InputImage& i1, const InputImage& i2)
 {
-    int first = i1.sizeCurrent.height() > i1.sizeCurrent.width() ?
-                i1.sizeCurrent.height() : i1.sizeCurrent.width();
-    int second = i2.sizeCurrent.height() > i2.sizeCurrent.width() ?
-                 i2.sizeCurrent.height() : i2.sizeCurrent.width();
-    if(first == second)
+	int first = i1.sizeCurrent.height() > i1.sizeCurrent.width()
+		? i1.sizeCurrent.height()
+		: i1.sizeCurrent.width();
+	int second = i2.sizeCurrent.height() > i2.sizeCurrent.width()
+		? i2.sizeCurrent.height()
+		: i2.sizeCurrent.width();
+	if (first == second)
     {
         return ImageCompareByArea(i1, i2);
     }
@@ -34,7 +36,7 @@ bool ImageCompareByMax(const InputImage &i1, const InputImage &i2)
 
 void ImagePacker::sort()
 {
-    switch(sortOrder)
+	switch (sortOrder)
     {
     case 1:
         qSort(images.begin(), images.end(), ImageCompareByWidth);
@@ -50,4 +52,3 @@ void ImagePacker::sort()
         break;
     }
 }
-

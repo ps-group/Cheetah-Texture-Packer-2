@@ -5,32 +5,32 @@ namespace
 {
 const char PLIST_DTD[] = R"***(<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">)***";
 
-void writeKey(QXmlStreamWriter &xml, const QString &key)
+void writeKey(QXmlStreamWriter& xml, const QString& key)
 {
     xml.writeTextElement("key", key);
 }
 
-void writeInteger(QXmlStreamWriter &xml, int value)
+void writeInteger(QXmlStreamWriter& xml, int value)
 {
     xml.writeTextElement("integer", QString::number(value));
 }
 
-void writeReal(QXmlStreamWriter &xml, double value)
+void writeReal(QXmlStreamWriter& xml, double value)
 {
     xml.writeTextElement("real", QString::number(value));
 }
 
-void writeString(QXmlStreamWriter &xml, const QString &value)
+void writeString(QXmlStreamWriter& xml, const QString& value)
 {
     xml.writeTextElement("string", value);
 }
 
-void writeBool(QXmlStreamWriter &xml, bool value)
+void writeBool(QXmlStreamWriter& xml, bool value)
 {
     xml.writeEmptyElement(value ? "true" : "false");
 }
 
-void writeSize(QXmlStreamWriter &xml, const QSize &value)
+void writeSize(QXmlStreamWriter& xml, const QSize& value)
 {
     char buffer[80];
     sprintf(buffer, "{%d,%d}", value.width(), value.height());
@@ -42,13 +42,13 @@ CocosMetadataWriter::CocosMetadataWriter()
 {
 }
 
-void CocosMetadataWriter::WriteTexture(const QString &path, const QSize &size)
+void CocosMetadataWriter::WriteTexture(const QString& path, const QSize& size)
 {
     m_meta.texturePath = path;
     m_meta.textureSize = size;
 }
 
-void CocosMetadataWriter::WriteFrame(const QString &name, const QPoint &pos, const QRect &crop, const QSize &origSize, bool rotated)
+void CocosMetadataWriter::WriteFrame(const QString& name, const QPoint& pos, const QRect& crop, const QSize& origSize, bool rotated)
 {
     FrameData data;
     data.name = name;
@@ -81,11 +81,11 @@ QByteArray CocosMetadataWriter::ToBytes() const
     return content;
 }
 
-void CocosMetadataWriter::writeFrames(QXmlStreamWriter &xml) const
+void CocosMetadataWriter::writeFrames(QXmlStreamWriter& xml) const
 {
     writeKey(xml, "frames");
     xml.writeStartElement("dict");
-    for (const FrameData &frame : m_frames)
+	for (const FrameData& frame : m_frames)
     {
         writeKey(xml, frame.name);
         xml.writeStartElement("dict");
@@ -112,7 +112,7 @@ void CocosMetadataWriter::writeFrames(QXmlStreamWriter &xml) const
     xml.writeEndElement(); // dict
 }
 
-void CocosMetadataWriter::writeMetadata(QXmlStreamWriter &xml) const
+void CocosMetadataWriter::writeMetadata(QXmlStreamWriter& xml) const
 {
     writeKey(xml, "metadata");
     xml.writeStartElement("dict");
@@ -128,7 +128,7 @@ void CocosMetadataWriter::writeMetadata(QXmlStreamWriter &xml) const
     xml.writeEndElement(); // dict
 }
 
-void CocosMetadataWriter::writeTexture(QXmlStreamWriter &xml) const
+void CocosMetadataWriter::writeTexture(QXmlStreamWriter& xml) const
 {
     writeKey(xml, "texture");
     xml.writeStartElement("dict");

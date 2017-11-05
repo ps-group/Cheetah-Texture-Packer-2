@@ -12,8 +12,8 @@ class CocosMetadataWriter : public IMetadataWriter
 public:
     CocosMetadataWriter();
 
-    void WriteTexture(const QString &path, const QSize &size) override;
-    void WriteFrame(const QString &name, const QPoint &pos, const QRect &crop, const QSize &origSize, bool rotated) override;
+	void WriteTexture(const QString& path, const QSize& size) override;
+	void WriteFrame(const QString& name, const QPoint& pos, const QRect& crop, const QSize& origSize, bool rotated) override;
     QByteArray ToBytes() const override;
 
 private:
@@ -32,9 +32,9 @@ private:
         QSize textureSize;
     };
 
-    void writeFrames(QXmlStreamWriter &xml)const;
-    void writeMetadata(QXmlStreamWriter &xml)const;
-    void writeTexture(QXmlStreamWriter &xml)const;
+	void writeFrames(QXmlStreamWriter& xml) const;
+	void writeMetadata(QXmlStreamWriter& xml) const;
+	void writeTexture(QXmlStreamWriter& xml) const;
 
     QList<FrameData> m_frames;
     Metadata m_meta;
