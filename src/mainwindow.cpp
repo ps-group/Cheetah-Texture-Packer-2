@@ -72,12 +72,10 @@ void MainWindow::recurseDirectory(const QString& dir)
 void MainWindow::customizeUI()
 {
     connect(this, SIGNAL(renderedImage(QList<QImage>)), ui->widget,
-		SLOT(updatePixmap(QList<QImage>)));
+        SLOT(updatePixmap(QList<QImage>)));
     ui->outDir->setText(QDir::homePath());
     exporting = false;
     ui->widget->scaleBox = ui->scale;
-    tabifyDockWidget(ui->dockPreferences, ui->dockExport);
-    ui->dockPreferences->raise();
     ui->imageFormat->addItems(Utils::GetWritableImageFormats());
     setAcceptDrops(true);
 

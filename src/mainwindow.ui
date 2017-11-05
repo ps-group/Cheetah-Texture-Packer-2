@@ -35,6 +35,9 @@
     </property>
     <item>
      <layout class="QVBoxLayout" name="verticalLayout_5">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetDefaultConstraint</enum>
+      </property>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_7">
         <item>
@@ -120,8 +123,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>380</width>
-           <height>737</height>
+           <width>402</width>
+           <height>743</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -232,7 +235,7 @@
         <number>0</number>
        </property>
        <property name="sizeConstraint">
-        <enum>QLayout::SetDefaultConstraint</enum>
+        <enum>QLayout::SetFixedSize</enum>
        </property>
        <item>
         <widget class="QPushButton" name="addTiles">
@@ -1057,7 +1060,7 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>221</width>
+     <width>254</width>
      <height>321</height>
     </size>
    </property>
@@ -1111,8 +1114,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="imageFormat">
-          </widget>
+          <widget class="QComboBox" name="imageFormat"/>
          </item>
         </layout>
        </item>
