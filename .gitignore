@@ -36,3 +36,9 @@ Makefile*
 
 # QtCtreator CMake
 CMakeLists.txt.user*
+
+# Custom deploy dirs
+CheetahTexturePacker/
+CheetahTexturePacker.zip
+CheetahTexturePacker.7z
+
